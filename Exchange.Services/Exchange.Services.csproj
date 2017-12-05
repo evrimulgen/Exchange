@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Exchange.Binance\Exchange.Binance.csproj" />
+    <ProjectReference Include="..\Exchange.Bittrex\Exchange.Bittrex.csproj" />
+    <ProjectReference Include="..\Exchange.Core\Exchange.Core.csproj" />
+    <ProjectReference Include="..\Exchange.Cryptopia\Exchange.Cryptopia.csproj" />
+  </ItemGroup>
+
+</Project>

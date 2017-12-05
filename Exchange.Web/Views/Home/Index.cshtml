@@ -1,0 +1,40 @@
+﻿@model List<Exchange.Core.Models.ArbitrageViewModel>
+@{
+    ViewData["Title"] = "Home Page";
+}
+<div>
+    <table id="arb" class="table table-striped table-dark">
+        <thead>
+            <tr>
+                <th scope="col">Symbol</th>
+                <th scope="col">Bittrex Price (BTC)</th>
+                <th scope="col">Binance Price (BTC)</th>
+                <th scope="col">Binance Volume (BTC)</th>
+                <th scope="col">Cryptopia Price (BTC)</th>
+                <th scope="col">Bittrex/Binance Diff (%)</th>
+                <th scope="col">Bittrex/Cryptopia Diff (%)</th>
+                <th scope="col">Binace/Cryptopia Diff (%)</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Where(c => c.BittrexBinancePercentage >= 3 || c.BittrexCryptpiaPercentage >= 3 || c.BinanceCryptopiaPercentage >= 3 ))
+            {
+                string[] knownBad = new string[] { "QTUM", "BTG", "FUEL" };
+                if (!knownBad.Contains(item.Symbol))
+                {
+                     <tr class="@((item.BittrexBinancePercentage >= 5 || item.BittrexCryptpiaPercentage >= 5 || item.BinanceCryptopiaPercentage >= 5) ? "success":"")">
+                        <td>@item.Symbol</td>
+                        <td>@item.BittrexPrice.ToString("N8")</td>
+                        <td>@item.BinancePrice.ToString("N8")</td>
+                        <td>@item.BinanceVolume</td>
+                        <td>@item.CryptopiaPrice.ToString("N8")</td>
+                        <td>@item.BittrexBinancePercentage.ToString("N2")</td>
+                        <td>@item.BittrexCryptpiaPercentage.ToString("N2")</td>
+                        <td>@string.Format("{0}%", item.BinanceCryptopiaPercentage.ToString("N2"))</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,61 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2010
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exchange.Binance", "Exchange.Binance\Exchange.Binance.csproj", "{A41F0641-7C66-475E-96FC-ABF840C0E068}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exchange.Cryptopia", "Exchange.Cryptopia\Exchange.Cryptopia.csproj", "{2497BCD4-A11A-4E65-B661-674617CC71AF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exchange.Client", "Exchange.Client\Exchange.Client.csproj", "{7FDA0E36-3DED-4F7B-8BBC-2D7F1B2F8310}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exchange.Bittrex", "Exchange.Bittrex\Exchange.Bittrex.csproj", "{A648447F-9557-4AA3-8DF6-F39FDC3DE675}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exchange.Web", "Exchange.Web\Exchange.Web.csproj", "{56AE9845-1467-403B-BF6F-61EAEAF5410C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exchange.Core", "Exchange.Core\Exchange.Core.csproj", "{B03C5721-1000-448D-B6CB-39995C22B11A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exchange.Services", "Exchange.Services\Exchange.Services.csproj", "{1C49F349-2D21-45AF-83F6-BA66133925B5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A41F0641-7C66-475E-96FC-ABF840C0E068}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A41F0641-7C66-475E-96FC-ABF840C0E068}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A41F0641-7C66-475E-96FC-ABF840C0E068}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A41F0641-7C66-475E-96FC-ABF840C0E068}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2497BCD4-A11A-4E65-B661-674617CC71AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2497BCD4-A11A-4E65-B661-674617CC71AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2497BCD4-A11A-4E65-B661-674617CC71AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2497BCD4-A11A-4E65-B661-674617CC71AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FDA0E36-3DED-4F7B-8BBC-2D7F1B2F8310}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FDA0E36-3DED-4F7B-8BBC-2D7F1B2F8310}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FDA0E36-3DED-4F7B-8BBC-2D7F1B2F8310}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FDA0E36-3DED-4F7B-8BBC-2D7F1B2F8310}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A648447F-9557-4AA3-8DF6-F39FDC3DE675}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A648447F-9557-4AA3-8DF6-F39FDC3DE675}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A648447F-9557-4AA3-8DF6-F39FDC3DE675}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A648447F-9557-4AA3-8DF6-F39FDC3DE675}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56AE9845-1467-403B-BF6F-61EAEAF5410C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56AE9845-1467-403B-BF6F-61EAEAF5410C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56AE9845-1467-403B-BF6F-61EAEAF5410C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56AE9845-1467-403B-BF6F-61EAEAF5410C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B03C5721-1000-448D-B6CB-39995C22B11A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B03C5721-1000-448D-B6CB-39995C22B11A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B03C5721-1000-448D-B6CB-39995C22B11A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B03C5721-1000-448D-B6CB-39995C22B11A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C49F349-2D21-45AF-83F6-BA66133925B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C49F349-2D21-45AF-83F6-BA66133925B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C49F349-2D21-45AF-83F6-BA66133925B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C49F349-2D21-45AF-83F6-BA66133925B5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8B1E6B7C-9BF1-47D7-BC9A-D80E0CB130CA}
+	EndGlobalSection
+EndGlobal
