@@ -62,8 +62,8 @@ namespace Exchange.Bittrex
                 prices = JsonConvert.DeserializeObject<GetBookOrderResults>(result.ToString());
                 return new OrderBook
                 {
-                    Buy = prices.result.buy == null ? new List<Order>() : prices.result.buy.Select(c => new Order { Price = c.Rate, Volume = c.Quantity }),
-                    Sell = prices.result.sell == null ? new List<Order>() : prices.result.sell.Select(c => new Order { Price = c.Rate, Volume = c.Quantity }),
+                    Buy = prices.result == null || prices.result.buy == null ? new List<Order>() : prices.result.buy.Select(c => new Order { Price = c.Rate, Volume = c.Quantity }),
+                    Sell = prices.result == null || prices.result.sell == null ? new List<Order>() : prices.result.sell.Select(c => new Order { Price = c.Rate, Volume = c.Quantity }),
                 };
             }
 

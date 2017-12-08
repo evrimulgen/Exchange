@@ -20,4 +20,20 @@ namespace Exchange.Core.Models
         public IEnumerable<Order> Sell { get; set; }
     }
 
+    public class ExchangeCoin
+    {
+        public string Symbol { get; set; }   
+        public string Market { get; set; }   
+        public string Exchange { get; set; }
+        public OrderBook Orders { get; set; }
+    }
+
+    public class ExchangeComparison
+    {
+        public string Symbol { get; set; }
+        public string Market { get; set; }
+        public ExchangeCoin High { get; set; }
+        public ExchangeCoin Low { get; set; }
+    }
+
 }

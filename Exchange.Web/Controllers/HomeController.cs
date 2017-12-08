@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Exchange.Web.Models;
 using Exchange.Services;
+using Exchange.Services.Models;
+using Exchange.Core.Models;
 
 namespace Exchange.Web.Controllers
 {
@@ -13,16 +15,36 @@ namespace Exchange.Web.Controllers
     {
         public IActionResult Index()
         {
-            var service = new ExchangeNormalizerService();
+            var exchangeService = new ExchangeNormalizerService();
+            var t = exchangeService.Foo();
 
-            return View(service.GetArbitrageView());
+            return View(t);
         }
 
-        public IActionResult About()
+        public IActionResult Details(ArbitrageResult item)
         {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
+            var exchangeService = new ExchangeNormalizerService();
+            var highPricedExchangeOrderBook = exchangeService.GetOrderBook(item.Exchange1, item.Market, item.Symbol);
+            var lowerPricedExchangeOrderBook = exchangeService.GetOrderBook(item.Exchange2, item.Market, item.Symbol);
+            var result = new ExchangeComparison
+            {
+                Symbol = item.Symbol,
+                Market = item.Market,
+                High = new ExchangeCoin {
+                    Exchange = item.Exchange1,
+                    Market = item.Market,
+                    Symbol = item.Symbol,
+                    Orders = exchangeService.GetOrderBook(item.Exchange1, item.Market, item.Symbol)
+                },
+                Low = new ExchangeCoin
+                {
+                    Exchange = item.Exchange2,
+                    Market = item.Market,
+                    Symbol = item.Symbol,
+                    Orders = exchangeService.GetOrderBook(item.Exchange2, item.Market, item.Symbol)
+                },
+            };
+            return View(result);
         }
 
         public IActionResult Contact()

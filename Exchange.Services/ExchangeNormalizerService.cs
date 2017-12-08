@@ -9,6 +9,7 @@ using static Exchange.Bittrex.BittrexClient;
 using static Exchange.Cryptopia.CryptopiaClient;
 using Exchange.Core.Interfaces;
 using Exchange.Core.Models;
+using Exchange.Services.Models;
 
 namespace Exchange.Services
 {
@@ -82,5 +83,83 @@ namespace Exchange.Services
             }
             return ob;
         }
+
+        public List<ArbitrageResult> Foo()
+        {
+            var t = GetExchangeComparison();
+            var results = new List<ArbitrageResult>();
+
+            foreach (var market in t)
+            {
+                foreach (var symbol in market.Value)
+                {
+                    results.AddRange(ShowComparison(symbol));
+                }
+            }
+
+            return results;
+        }
+
+        private ArbitrageResult ComparePrices(ICurrencyCoin value1, ICurrencyCoin value2)
+        {
+            ArbitrageResult result = null;
+            if (value1.Price > value2.Price && ((1 - (value2.Price / value1.Price)) * 100) > 5)
+            {
+                result = new ArbitrageResult
+                {
+                    Market = value1.Market,
+                    Symbol = value1.TickerSymbol,
+                    Exchange1 = value1.Exchange,
+                    Exchange1Price = value1.Price,
+                    Exchange2 = value2.Exchange,
+                    Exchange2Price = value2.Price,
+                    Percentage = ((1 - (value2.Price / value1.Price)) * 100)
+                };
+
+            }
+            else if (((1 - (value1.Price / value2.Price)) * 100) > 5)
+            {
+                result = new ArbitrageResult
+                {
+                    Market = value1.Market,
+                    Symbol = value1.TickerSymbol,
+                    Exchange1 = value2.Exchange,
+                    Exchange1Price = value2.Price,
+                    Exchange2 = value1.Exchange,
+                    Exchange2Price = value1.Price,
+                    Percentage = ((1 - (value1.Price / value2.Price)) * 100)
+                };
+            }
+            return result;
+
+        }
+
+        private IEnumerable<ArbitrageResult> ShowComparison(KeyValuePair<string, IEnumerable<ICurrencyCoin>> coins)
+        {
+            var results = new List<ArbitrageResult>();
+            switch (coins.Value.Count())
+            {
+                case 1:
+                    break;
+                case 2:
+                    var a = ComparePrices(coins.Value.ElementAt(0), coins.Value.ElementAt(1));
+                    if (a != null) results.Add(a);
+                    break;
+                case 3:
+                    var b = ComparePrices(coins.Value.ElementAt(0), coins.Value.ElementAt(1));
+                    var c = ComparePrices(coins.Value.ElementAt(1), coins.Value.ElementAt(2));
+                    var d = ComparePrices(coins.Value.ElementAt(0), coins.Value.ElementAt(2));
+                    if (b != null) results.Add(b);
+                    if (c != null) results.Add(c);
+                    if (d != null) results.Add(d);
+                    break;
+                case 4:
+                    break;
+                default:
+                    break;
+            }
+            return results;
+        }
+
     }
 }
