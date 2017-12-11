@@ -34,7 +34,7 @@ namespace Exchange.Services
             var list = new List<ICurrencyCoin>();
             list.AddRange(_binanceService.ListPrices());
             list.AddRange(_bittrexService.ListPrices());
-            //list.AddRange(_cryptopiaService.ListPrices());
+            list.AddRange(_cryptopiaService.ListPrices());
             return list;
         }
 

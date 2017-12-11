@@ -19,10 +19,10 @@
             <td>{{ arb.market }}</td>
             <td>{{ arb.symbol }}</td>
             <td>{{ arb.exchange1 }}</td>
-            <td>{{ arb.exchange1Price }}</td>
+            <td>{{ arb.exchange1Price | number:'1.8-8'}}</td>
             <td>{{ arb.exchange2 }}</td>
-            <td>{{ arb.exchange2Price }}</td>
-            <td>{{ arb.percentage }}</td>
+            <td>{{ arb.exchange2Price | number:'1.8-8' }}</td>
+            <td>{{ arb.percentage | number:'1.1-2'}}%</td>
         </tr>
     </tbody>
 </table>
