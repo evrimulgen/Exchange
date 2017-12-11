@@ -1,0 +1,28 @@
+<h2>Potential Coins to Arbitrage</h2>
+
+<p *ngIf="!arbitrages"><em>Loading...</em></p>
+
+<table class='table table-striped table-dark' *ngIf="arbitrages">
+    <thead>
+        <tr>
+            <th>Market</th>
+            <th>Symbol</th>
+            <th>Higher Priced Exchange</th>
+            <th>HPE Price</th>
+            <th>Lower Priced Exchange</th>
+            <th>LPE Price</th>
+            <th>Percentage</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let arb of arbitrages">
+            <td>{{ arb.market }}</td>
+            <td>{{ arb.symbol }}</td>
+            <td>{{ arb.exchange1 }}</td>
+            <td>{{ arb.exchange1Price }}</td>
+            <td>{{ arb.exchange2 }}</td>
+            <td>{{ arb.exchange2Price }}</td>
+            <td>{{ arb.percentage }}</td>
+        </tr>
+    </tbody>
+</table>

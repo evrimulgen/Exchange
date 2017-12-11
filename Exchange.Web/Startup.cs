@@ -1,18 +1,19 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Exchange.Services;
-using Exchange.Binance;
-using Exchange.Bittrex;
-using Exchange.Cryptopia;
-using static Exchange.Binance.BinanceClient;
-using static Exchange.Bittrex.BittrexClient;
 using static Exchange.Cryptopia.CryptopiaClient;
+using static Exchange.Bittrex.BittrexClient;
+using static Exchange.Binance.BinanceClient;
+using Exchange.Cryptopia;
+using Exchange.Bittrex;
+using Exchange.Binance;
+using Exchange.Services;
 
 namespace Exchange.Web
 {
@@ -44,7 +45,10 @@ namespace Exchange.Web
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
+                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
+                {
+                    HotModuleReplacement = true
+                });
             }
             else
             {
@@ -58,6 +62,10 @@ namespace Exchange.Web
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+
+                routes.MapSpaFallbackRoute(
+                    name: "spa-fallback",
+                    defaults: new { controller = "Home", action = "Index" });
             });
         }
     }
