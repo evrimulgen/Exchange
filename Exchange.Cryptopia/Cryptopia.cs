@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Exchange.Core.Interfaces;
 using System.Text.RegularExpressions;
 using Exchange.Core.Models;
+using System.Net;
+using System.Threading;
 
 namespace Exchange.Cryptopia
 {
@@ -23,14 +25,13 @@ namespace Exchange.Cryptopia
         {
             _httpClient = new HttpClient
             {
-                BaseAddress = new Uri(url)
+                BaseAddress = new Uri(url),
 
             };
 
             _httpClient.DefaultRequestHeaders
                     .Accept
                     .Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-
         }
 
         // GET
@@ -48,8 +49,10 @@ namespace Exchange.Cryptopia
 
         public interface ICryptopiaService
         {
+            IEnumerable<ICurrencyCoin> ListPrices();
+            OrderBook GetMarketOrders(string marketName);
         }
-        public class CryptopiaService : ICryptopiaService, IExchangeService
+        public class CryptopiaService : ICryptopiaService
         {
             private readonly ICryptopiaClient _cryptopiaClient;
             private string[] KNOWN_BAD_COINS = new string[] { "QTUM", "BTG", "FUEL" };

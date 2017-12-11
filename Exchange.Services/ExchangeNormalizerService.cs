@@ -13,30 +13,28 @@ using Exchange.Services.Models;
 
 namespace Exchange.Services
 {
-    public class ExchangeNormalizerService
+    public class ExchangeNormalizerService : IExchangeNormalizerService
     {
-        private IBinanceClient binanceClient;
-        private IBittrexClient bittrexClient;
-        private ICryptopiaClient cryptopiaClient;
-        private IExchangeService binanceService;
-        private IExchangeService bittrexService;
-        private IExchangeService cryptopiaService;
+        private readonly IBinanceService _binanceService;
+        private readonly IBittrexService _bittrexService;
+        private readonly ICryptopiaService _cryptopiaService;
 
-        public ExchangeNormalizerService()
+        public ExchangeNormalizerService(
+            IBinanceService binanceService,
+            IBittrexService bittrexService,
+            ICryptopiaService cryptopiaService
+            )
         {
-            this.binanceClient = new BinanceClient();
-            this.binanceService = new BinanceService(binanceClient);
-            this.bittrexClient = new BittrexClient();
-            this.bittrexService = new BittrexService(bittrexClient);
-            this.cryptopiaClient = new CryptopiaClient();
-            this.cryptopiaService = new CryptopiaService(cryptopiaClient);
+            _binanceService = binanceService;
+            _bittrexService = bittrexService;
+            _cryptopiaService = cryptopiaService;
         }
         public IEnumerable<ICurrencyCoin> GetAllCoins()
         {
             var list = new List<ICurrencyCoin>();
-            list.AddRange(binanceService.ListPrices());
-            list.AddRange(bittrexService.ListPrices());
-            list.AddRange(cryptopiaService.ListPrices());
+            list.AddRange(_binanceService.ListPrices());
+            list.AddRange(_bittrexService.ListPrices());
+            //list.AddRange(_cryptopiaService.ListPrices());
             return list;
         }
 
@@ -70,13 +68,13 @@ namespace Exchange.Services
             switch (exchange)
             {
                 case "Cryptopia":
-                    ob = cryptopiaService.GetMarketOrders(string.Format(@"{0}_{1}", symbol, market));
+                    ob = _cryptopiaService.GetMarketOrders(string.Format(@"{0}_{1}", symbol, market));
                     break;
                 case "Binance":
-                    ob = binanceService.GetMarketOrders(string.Format(@"{0}{1}", symbol.ToUpper(), market.ToUpper()));
+                    ob = _binanceService.GetMarketOrders(string.Format(@"{0}{1}", symbol.ToUpper(), market.ToUpper()));
                     break;
                 case "Bittrex":
-                    ob = bittrexService.GetMarketOrders(string.Format(@"{0}-{1}", market.ToUpper(), symbol.ToUpper()));
+                    ob = _bittrexService.GetMarketOrders(string.Format(@"{0}-{1}", market.ToUpper(), symbol.ToUpper()));
                     break;
                 default:
                     break;
@@ -84,7 +82,7 @@ namespace Exchange.Services
             return ob;
         }
 
-        public List<ArbitrageResult> Foo()
+        public List<ArbitrageResult> GetArbitrageComparisions()
         {
             var t = GetExchangeComparison();
             var results = new List<ArbitrageResult>();

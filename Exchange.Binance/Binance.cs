@@ -139,12 +139,13 @@ namespace Exchange.Binance
             return string.Join("&", list);
         }
 
-        public interface IBinanceService
+        public interface IBinanceService 
         {
             //ACCOUNT - GET
             Task<dynamic> GetAccountAsync();
             //MARKET - GET
             IEnumerable<ICurrencyCoin> ListPrices();
+            OrderBook GetMarketOrders(string marketName);
             Task<dynamic> GetAllPricesAsync();
             Task<dynamic> GetDepthAsync(string symbol);
             Task<dynamic> GetTradesAsync(string symbol);
@@ -157,9 +158,10 @@ namespace Exchange.Binance
             Task<dynamic> PlaceSellOrderAsync(string symbol, double quantity, double price, string type);
             //ORDERS - DELETE
             Task<dynamic> CancelOrderAsync(string symbol, int orderId);
+
         }
 
-        public class BinanceService : IBinanceService, IExchangeService
+        public class BinanceService : IBinanceService
         {
             private readonly IBinanceClient _binanceClient;
             

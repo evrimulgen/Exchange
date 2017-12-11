@@ -45,7 +45,13 @@ namespace Exchange.Bittrex
             return JsonConvert.DeserializeObject<T>(result);
         }
 
-        public class BittrexService : IExchangeService
+        public interface IBittrexService 
+        {
+            OrderBook GetMarketOrders(string marketName);
+            IEnumerable<ICurrencyCoin> ListPrices();
+        }
+
+        public class BittrexService : IBittrexService
         {
             private readonly IBittrexClient _BittrexClient;
 

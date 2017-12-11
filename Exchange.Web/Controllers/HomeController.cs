@@ -13,19 +13,22 @@ namespace Exchange.Web.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IExchangeNormalizerService _exchangeService;
+
+        public HomeController(IExchangeNormalizerService exchangeService)
+        {
+            _exchangeService = exchangeService;
+        }
         public IActionResult Index()
         {
-            var exchangeService = new ExchangeNormalizerService();
-            var t = exchangeService.Foo();
-
+            var t = _exchangeService.GetArbitrageComparisions();
             return View(t);
         }
 
         public IActionResult Details(ArbitrageResult item)
         {
-            var exchangeService = new ExchangeNormalizerService();
-            var highPricedExchangeOrderBook = exchangeService.GetOrderBook(item.Exchange1, item.Market, item.Symbol);
-            var lowerPricedExchangeOrderBook = exchangeService.GetOrderBook(item.Exchange2, item.Market, item.Symbol);
+            var highPricedExchangeOrderBook = _exchangeService.GetOrderBook(item.Exchange1, item.Market, item.Symbol);
+            var lowerPricedExchangeOrderBook = _exchangeService.GetOrderBook(item.Exchange2, item.Market, item.Symbol);
             var result = new ExchangeComparison
             {
                 Symbol = item.Symbol,
@@ -34,14 +37,14 @@ namespace Exchange.Web.Controllers
                     Exchange = item.Exchange1,
                     Market = item.Market,
                     Symbol = item.Symbol,
-                    Orders = exchangeService.GetOrderBook(item.Exchange1, item.Market, item.Symbol)
+                    Orders = _exchangeService.GetOrderBook(item.Exchange1, item.Market, item.Symbol)
                 },
                 Low = new ExchangeCoin
                 {
                     Exchange = item.Exchange2,
                     Market = item.Market,
                     Symbol = item.Symbol,
-                    Orders = exchangeService.GetOrderBook(item.Exchange2, item.Market, item.Symbol)
+                    Orders = _exchangeService.GetOrderBook(item.Exchange2, item.Market, item.Symbol)
                 },
             };
             return View(result);

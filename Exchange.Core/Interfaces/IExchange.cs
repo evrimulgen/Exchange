@@ -5,9 +5,4 @@ using System.Text;
 
 namespace Exchange.Core.Interfaces
 {
-    public interface IExchangeService
-    {
-        IEnumerable<ICurrencyCoin> ListPrices();
-        OrderBook GetMarketOrders(string marketName);
-    }
 }
