@@ -37,7 +37,7 @@ namespace Exchange.Web.Controllers
                     }
                 };
             }
-            return results;
+            return results.OrderByDescending(c => c.Percentage);
         }
         
     }

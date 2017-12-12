@@ -1,28 +1,22 @@
-<div class='main-nav'>
-    <div class='navbar navbar-inverse'>
-        <div class='navbar-header'>
-            <button type='button' class='navbar-toggle' data-toggle='collapse' data-target='.navbar-collapse'>
-                <span class='sr-only'>Toggle navigation</span>
-                <span class='icon-bar'></span>
-                <span class='icon-bar'></span>
-                <span class='icon-bar'></span>
-            </button>
-            <a class='navbar-brand' [routerLink]="['/home']">Arbitrage</a>
-        </div>
-        <div class='clearfix'></div>
-        <div class='navbar-collapse collapse'>
-            <ul class='nav navbar-nav'>
-                <li [routerLinkActive]="['link-active']">
-                    <a [routerLink]="['/home']">
-                        <span class='glyphicon glyphicon-home'></span> Home
-                    </a>
-                </li>
-                <li [routerLinkActive]="['link-active']">
-                    <a [routerLink]="['/arbitrage']">
-                        <span class='glyphicon glyphicon-th-list'></span> Fetch data
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</div>
+<nav class="navbar navbar-default navbar-inverse bg-inverse navbar-static-top"> 
+        <div class="container-fluid"> 
+            <div class="navbar-header">
+                 <button type="button" class="collapsed navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-8" aria-expanded="false"> 
+                     <span class="sr-only">Toggle navigation</span> 
+                     <span class="icon-bar"></span> 
+                     <span class="icon-bar"></span> 
+                     <span class="icon-bar"></span> 
+                    </button> 
+                    <a href="#" class="navbar-brand">Arbitrage</a> 
+                </div> 
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-8"> 
+                    <ul class="nav navbar-nav"> 
+                        <li class="active"><a class="nav-link" [routerLink]="['/home']">Home</a></li> 
+                        <li><a class="nav-link" [routerLink]="['/arbitrage']">Fetch data</a></li> 
+                    </ul> 
+                </div> 
+            </div> 
+        </nav>
+    
+    
+    
