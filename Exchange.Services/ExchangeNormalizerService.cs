@@ -69,12 +69,18 @@ namespace Exchange.Services
             {
                 case "Cryptopia":
                     ob = _cryptopiaService.GetMarketOrders(string.Format(@"{0}_{1}", symbol, market));
+                    var i = _cryptopiaService.Get24hrAsync(string.Format(@"{0}_{1}", symbol, market)).Result;
+                    ob.Market = new MarketResult { Volume = i.Volume, Last = i.LastPrice };
                     break;
                 case "Binance":
                     ob = _binanceService.GetMarketOrders(string.Format(@"{0}{1}", symbol.ToUpper(), market.ToUpper()));
+                    var ii = _binanceService.Get24hrAsync(string.Format(@"{0}{1}", symbol.ToUpper(), market.ToUpper())).Result;
+                    ob.Market = new MarketResult { Volume = ii.volume, Last = ii.lastPrice };
                     break;
                 case "Bittrex":
                     ob = _bittrexService.GetMarketOrders(string.Format(@"{0}-{1}", market.ToUpper(), symbol.ToUpper()));
+                    var iii = _bittrexService.Get24hrAsync(string.Format(@"{0}-{1}", market.ToUpper(), symbol.ToUpper())).Result;
+                    ob.Market = new MarketResult { Volume = iii.Volume, Last = iii.Last };
                     break;
                 default:
                     break;
@@ -108,8 +114,10 @@ namespace Exchange.Services
                     Market = value1.Market,
                     Symbol = value1.TickerSymbol,
                     Exchange1 = value1.Exchange,
+                    Exchange1Logo = value1.Logo,
                     Exchange1Price = value1.Price,
                     Exchange2 = value2.Exchange,
+                    Exchange2Logo = value2.Logo,
                     Exchange2Price = value2.Price,
                     Percentage = ((1 - (value2.Price / value1.Price)) * 100)
                 };
@@ -122,8 +130,10 @@ namespace Exchange.Services
                     Market = value1.Market,
                     Symbol = value1.TickerSymbol,
                     Exchange1 = value2.Exchange,
+                    Exchange1Logo = value2.Logo,
                     Exchange1Price = value2.Price,
                     Exchange2 = value1.Exchange,
+                    Exchange2Logo = value1.Logo,
                     Exchange2Price = value1.Price,
                     Percentage = ((1 - (value1.Price / value2.Price)) * 100)
                 };

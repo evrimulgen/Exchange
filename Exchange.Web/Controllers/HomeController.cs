@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Exchange.Services;
+using Exchange.Services.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Exchange.Web.Controllers
@@ -11,12 +13,6 @@ namespace Exchange.Web.Controllers
     {
         public IActionResult Index()
         {
-            return View();
-        }
-
-        public IActionResult Error()
-        {
-            ViewData["RequestId"] = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
             return View();
         }
     }

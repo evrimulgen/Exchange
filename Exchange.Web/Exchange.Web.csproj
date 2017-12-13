@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,7 +22,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\app\components\arbitrage\arbitrage.component.html" />
+    <None Remove="ClientApp\app\components\arbitrage\arbitrage.component.ts" />
+    <None Remove="ClientApp\models\ArbitrageResult.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Exchange.Services\Exchange.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\app\components\arbitrage\arbitrage.component.html" />
+    <TypeScriptCompile Include="ClientApp\app\components\arbitrage\arbitrage.component.ts" />
+    <TypeScriptCompile Include="ClientApp\models\ArbitrageResult.ts" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">

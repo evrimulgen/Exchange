@@ -145,6 +145,7 @@ namespace Exchange.Binance
             Task<dynamic> GetAccountAsync();
             //MARKET - GET
             IEnumerable<ICurrencyCoin> ListPrices();
+            Task<BinanceMarketResult> Get24hrAsync(string symbol);
             OrderBook GetMarketOrders(string marketName);
             Task<dynamic> GetAllPricesAsync();
             Task<dynamic> GetDepthAsync(string symbol);
@@ -183,18 +184,18 @@ namespace Exchange.Binance
                 return result;
             }
 
-            ////Get depth of a symbol
-            //public async Task<Binance24hrResult> Get24hrAsync(string symbol)
-            //{
-            //    var result = await _binanceClient.GetAsync<Binance24hrResult>("v1/ticker/24hr", "symbol=" + symbol);
+            //Get depth of a symbol
+            public async Task<BinanceMarketResult> Get24hrAsync(string symbol)
+            {
+                var result = await _binanceClient.GetAsync<BinanceMarketResult>("v1/ticker/24hr", "symbol=" + symbol);
 
-            //    if (result == null)
-            //    {
-            //        throw new NullReferenceException();
-            //    }
+                if (result == null)
+                {
+                    throw new NullReferenceException();
+                }
 
-            //    return result;
-            //}
+                return result;
+            }
 
             //Get latest price of all symbols
             public async Task<dynamic> GetAllPricesAsync()
@@ -209,7 +210,7 @@ namespace Exchange.Binance
                 return result;
 
             }
-
+            #region Signed
             //Get account information
             public async Task<dynamic> GetAccountAsync()
             {
@@ -304,7 +305,6 @@ namespace Exchange.Binance
                 return result;
             }
 
-
             //Cancel an order
             public async Task<dynamic> CancelOrderAsync(string symbol, int orderId)
             {
@@ -316,7 +316,7 @@ namespace Exchange.Binance
 
                 return result;
             }
-
+            #endregion
             //Overload for ease of use
             public IEnumerable<ICurrencyCoin> ListPrices()
             {
@@ -360,7 +360,10 @@ namespace Exchange.Binance
 
     public class BinanceCoin : ICurrencyCoin
     {
+
         public string Exchange { get { return "Binance"; } }
+
+        public string Logo { get { return "https://assets.coingecko.com/coins/images/825/small/binance_coin.png?1510040255";  } }
         public string Symbol { get; set; }
         public double Price { get; set; }
         public string Market
@@ -396,6 +399,32 @@ namespace Exchange.Binance
     {
         public double Price { get; set; }
         public double Volume { get; set; }
+    }
+
+    public class BinanceMarketRootObject
+    {
+
+    }
+    public class BinanceMarketResult
+    {
+        //GET /api/v1/ticker/24hr
+        public string URL { get { return "/api/v1/ticker/24hr?symbol={0}"; } }
+        public string priceChange { get; set; }
+        public string priceChangePercent { get; set; }
+        public string weightedAvgPrice { get; set; }
+        public string prevClosePrice { get; set; }
+        public double lastPrice { get; set; }
+        public string bidPrice { get; set; }
+        public string askPrice { get; set; }
+        public string openPrice { get; set; }
+        public string highPrice { get; set; }
+        public string lowPrice { get; set; }
+        public double volume { get; set; }
+        public long openTime { get; set; }
+        public long closeTime { get; set; }
+        public int fristId { get; set; }
+        public int lastId { get; set; }
+        public int count { get; set; }
     }
 
 }

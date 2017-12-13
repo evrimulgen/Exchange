@@ -51,6 +51,7 @@ namespace Exchange.Cryptopia
         {
             IEnumerable<ICurrencyCoin> ListPrices();
             OrderBook GetMarketOrders(string marketName);
+            Task<CryptopiaMarketResult> Get24hrAsync(string symbol);
         }
         public class CryptopiaService : ICryptopiaService
         {
@@ -61,7 +62,18 @@ namespace Exchange.Cryptopia
             {
                 _cryptopiaClient = binanceClient;
             }
-            
+            public async Task<CryptopiaMarketResult> Get24hrAsync(string symbol)
+            {
+                var result = await _cryptopiaClient.GetAsync<CryptopiaMarketRootObject>("GetMarket/" + symbol);
+
+                if (result == null)
+                {
+                    throw new NullReferenceException();
+                }
+
+                return result.Data;
+            }
+
             //Overload for ease of use
             public IEnumerable<ICurrencyCoin> ListPrices()
             {
@@ -88,6 +100,7 @@ namespace Exchange.Cryptopia
     {
         private Regex _labelRegex = new Regex(@"(?<symbol>.*)\/(?<market>.*)");
         public string Exchange { get { return "Cryptopia";  } }
+        public string Logo { get { return "https://www.cryptopia.co.nz/favicon.ico"; } }
         public int TradePairId { get; set; }
         public string Label { get; set; }
         public double AskPrice { get; set; }
@@ -130,6 +143,37 @@ namespace Exchange.Cryptopia
         public IEnumerable<CryptopiaCoin> Data { get; set; }
         public object Error { get; set; }
     }
+
+    public class CryptopiaMarketRootObject
+    {
+        public bool Success { get; set; }
+        public object Message { get; set; }
+        public CryptopiaMarketResult Data { get; set; }
+    }
+
+    public class CryptopiaMarketResult
+    {
+
+        //GET https://www.cryptopia.co.nz/api/GetMarket/DOT_BTC
+        public string URL { get { return "api/GetMarket/{0}"; } }
+        public int TradePairId { get; set; }
+        public string Label { get; set; }
+        public double AskPrice { get; set; }
+        public double BidPrice { get; set; }
+        public double Low { get; set; }
+        public double High { get; set; }
+        public double Volume { get; set; }
+        public double LastPrice { get; set; }
+        public double BuyVolume { get; set; }
+        public double SellVolume { get; set; }
+        public double Change { get; set; }
+        public double Open { get; set; }
+        public double Close { get; set; }
+        public double BaseVolume { get; set; }
+        public double BaseBuyVolume { get; set; }
+        public double BaseSellVolume { get; set; }
+    }
+
 
     public class GetMarketOrderResults
     {

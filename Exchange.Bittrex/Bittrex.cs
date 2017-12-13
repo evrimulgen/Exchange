@@ -49,6 +49,7 @@ namespace Exchange.Bittrex
         {
             OrderBook GetMarketOrders(string marketName);
             IEnumerable<ICurrencyCoin> ListPrices();
+            Task<BittrexMarketResult> Get24hrAsync(string symbol);
         }
 
         public class BittrexService : IBittrexService
@@ -59,6 +60,19 @@ namespace Exchange.Bittrex
             {
                 _BittrexClient = binanceClient;
             }
+
+            public async Task<BittrexMarketResult> Get24hrAsync(string symbol)
+            {
+                var result = await _BittrexClient.GetAsync<BittrexMarketResult>("v1.1/public/getmarketsummary", "market=" + symbol);
+
+                if (result == null)
+                {
+                    throw new NullReferenceException();
+                }
+
+                return result;
+            }
+
 
             public OrderBook GetMarketOrders(string marketName)
             {
@@ -106,7 +120,25 @@ namespace Exchange.Bittrex
         public List<BittrexOrder> sell { get; set; }
     }
 
-
+    public class BittrexMarketResult
+    {
+        //GET https://bittrex.com/api/v1.1/public/getmarketsummary?market=btc-ltc    
+        public string URL { get { return "api/v1.1/public/getmarketsummary?market={0}"; } }
+        public string MarketName { get; set; }
+        public double High { get; set; }
+        public double Low { get; set; }
+        public double Volume { get; set; }
+        public double Last { get; set; }
+        public double BaseVolume { get; set; }
+        public DateTime TimeStamp { get; set; }
+        public double Bid { get; set; }
+        public double Ask { get; set; }
+        public int OpenBuyOrders { get; set; }
+        public int OpenSellOrders { get; set; }
+        public double PrevDay { get; set; }
+        public DateTime Created { get; set; }
+        public object DisplayMarketName { get; set; }
+    }
 
     //For Market API Call
 
@@ -144,6 +176,7 @@ namespace Exchange.Bittrex
     public class BittrexCoin : ICurrencyCoin
     {
         public string Exchange { get { return "Bittrex"; } }
+        public string Logo {  get { return "https://bittrex.com/Content/img/logos/bittrex-96.png"; } }
         public string MarketName { get; set; }
         public double High { get; set; }
         public double Low { get; set; }

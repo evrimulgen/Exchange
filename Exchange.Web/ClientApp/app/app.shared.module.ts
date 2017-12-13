@@ -5,28 +5,29 @@ import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './components/app/app.component';
-import { HomeComponent } from './components/home/home.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { ArbitrageComponent } from './components/arbitrage/arbitrage.component';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
     declarations: [
         AppComponent,
-        HomeComponent,
         NavMenuComponent,
-        ArbitrageComponent
+        ArbitrageComponent,
+        HomeComponent
     ],
     imports: [
         CommonModule,
         HttpModule,
         FormsModule,
         RouterModule.forRoot([
-            { path: '', redirectTo: 'arbitrage', pathMatch: 'full' },
+            { path: '', redirectTo: 'home', pathMatch: 'full' },
             { path: 'home', component: HomeComponent },
             { path: 'arbitrage', component: ArbitrageComponent },
-            { path: '**', redirectTo: 'arbitrage' }
+            { path: '**', redirectTo: 'home' }
         ])
     ]
 })
 export class AppModuleShared {
+
 }

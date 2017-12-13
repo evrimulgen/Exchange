@@ -13,9 +13,11 @@ namespace Exchange.Services.Models
         public string Market { get; set; }
         public string Symbol { get; set; }
         public string Exchange1 { get; set; }
+        public string Exchange1Logo { get; set; }
         public double Exchange1Price { get; set; }
         public string Exchange2 { get; set; }
         public double Exchange2Price { get; set; }
+        public string Exchange2Logo { get; set; }
         public double Percentage { get; set; }
 
         public string Exchange1Link
