@@ -6,7 +6,6 @@ using Exchange.Cryptopia;
 using Exchange.Binance;
 using static Exchange.Binance.BinanceClient;
 using Exchange.Bittrex;
-using static Exchange.Bittrex.BittrexClient;
 using System.Diagnostics;
 using System.Collections.Generic;
 using Exchange.Core.Interfaces;
@@ -22,18 +21,22 @@ namespace Exchange.Client
             ConfigureDependencyInjection(services);
             var serviceProvider = services.BuildServiceProvider();
             var cryptopiaService = serviceProvider.GetRequiredService<ICryptopiaService>();
+            var bittrexService = serviceProvider.GetRequiredService<IBittrexService>();
 
-            var results = cryptopiaService.ListPrices().Result;
+            var r1 = cryptopiaService.GetMarketOrderGroups(new string[] { "DOT_BTC", "DOT_LTC", "DOT_DOGE" }).Result;
 
-            Console.WriteLine("Found {0} sybmols!", results.Count());
+            var r2 = bittrexService.GetMarketSummaries().Result;
 
+
+            Console.WriteLine("Found {0} sybmols @ Cryptopia!", r1.Count());
+            Console.WriteLine("Found {0} sybmols @ Bittrex!", r2.Count());
+            Console.ReadLine();
         }
 
         public static void ConfigureDependencyInjection(IServiceCollection services)
         {
             services.AddTransient<IExchangeNormalizerService, ExchangeNormalizerService>();
             services.AddTransient<IBinanceClient, BinanceClient>();
-            services.AddTransient<IBittrexClient, BittrexClient>();
             services.AddTransient<IApiService, ApiService>();
             services.AddTransient<IBinanceService, BinanceService>();
             services.AddTransient<IBittrexService, BittrexService>();

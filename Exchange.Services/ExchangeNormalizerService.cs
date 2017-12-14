@@ -5,7 +5,6 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using static Exchange.Binance.BinanceClient;
-using static Exchange.Bittrex.BittrexClient;
 using Exchange.Core.Interfaces;
 using Exchange.Core.Models;
 using Exchange.Services.Models;
@@ -17,6 +16,8 @@ namespace Exchange.Services
         private readonly IBinanceService _binanceService;
         private readonly IBittrexService _bittrexService;
         private readonly ICryptopiaService _cryptopiaService;
+
+        private string[] KNOWN_BAD_COINS = new string[] { "QTUM", "BTG", "FUEL", "CMT" };
 
         public ExchangeNormalizerService(
             IBinanceService binanceService,
@@ -32,8 +33,8 @@ namespace Exchange.Services
         {
             var list = new List<ICurrencyCoin>();
             list.AddRange(_binanceService.ListPrices());
-            list.AddRange(_bittrexService.ListPrices());
-            list.AddRange(_cryptopiaService.ListPrices().Result);
+            list.AddRange(_bittrexService.GetMarketSummaries().Result);
+            list.AddRange(_cryptopiaService.ListPrices().Result.Where(c => !KNOWN_BAD_COINS.Contains(c.TickerSymbol)));
             return list;
         }
 
@@ -69,17 +70,22 @@ namespace Exchange.Services
                 case "Cryptopia":
                     ob = _cryptopiaService.GetMarketOrders(string.Format(@"{0}_{1}", symbol, market)).Result;
                     var i = _cryptopiaService.Get24hrAsync(string.Format(@"{0}_{1}", symbol, market)).Result;
-                    ob.Market = new MarketResult { Volume = i.Volume, Last = i.LastPrice };
+                    ob.MarketResult = new MarketResult { Volume = i.Volume, Last = i.LastPrice };
                     break;
                 case "Binance":
                     ob = _binanceService.GetMarketOrders(string.Format(@"{0}{1}", symbol.ToUpper(), market.ToUpper()));
                     var ii = _binanceService.Get24hrAsync(string.Format(@"{0}{1}", symbol.ToUpper(), market.ToUpper())).Result;
-                    ob.Market = new MarketResult { Volume = ii.volume, Last = ii.lastPrice };
+                    ob.MarketResult = new MarketResult { Volume = ii.volume, Last = ii.lastPrice };
                     break;
                 case "Bittrex":
-                    ob = _bittrexService.GetMarketOrders(string.Format(@"{0}-{1}", market.ToUpper(), symbol.ToUpper()));
-                    var iii = _bittrexService.Get24hrAsync(string.Format(@"{0}-{1}", market.ToUpper(), symbol.ToUpper())).Result;
-                    ob.Market = new MarketResult { Volume = iii.Volume, Last = iii.Last };
+                    var bob = _bittrexService.GetOrderBook(string.Format(@"{0}-{1}", market.ToUpper(), symbol.ToUpper())).Result;
+                    ob = new OrderBook
+                    {
+                        Buy = bob.buy.Select(c => new Order { Price = c.Rate, Volume = c.Quantity }),
+                        Sell = bob.sell.Select(c => new Order { Price = c.Rate, Volume = c.Quantity }),
+                    };
+                    var iii = _bittrexService.GetMarketSummary(string.Format(@"{0}-{1}", market.ToUpper(), symbol.ToUpper())).Result;
+                    ob.MarketResult = new MarketResult { Volume = iii.Volume, Last = iii.Last };
                     break;
                 default:
                     break;

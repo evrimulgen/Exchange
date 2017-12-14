@@ -76,7 +76,7 @@ namespace Exchange.Web.Controllers
             foreach(var pArb in potentialArbs)
             {
                 var comparison = GetExchangeComparison(pArb);
-                if ((comparison.Low.Orders.Market.Volume > 0 && comparison.High.Orders.Market.Volume > 0) &&
+                if ((comparison.Low.Orders.MarketResult.Volume > 0 && comparison.High.Orders.MarketResult.Volume > 0) &&
                     (comparison.Low.Orders.Sell.ElementAt(0).Price < comparison.High.Orders.Buy.ElementAt(0).Price))
                     results.Add(pArb);
             }
