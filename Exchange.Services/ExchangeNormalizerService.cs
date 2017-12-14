@@ -6,7 +6,6 @@ using System.Linq;
 using System.Collections.Generic;
 using static Exchange.Binance.BinanceClient;
 using static Exchange.Bittrex.BittrexClient;
-using static Exchange.Cryptopia.CryptopiaClient;
 using Exchange.Core.Interfaces;
 using Exchange.Core.Models;
 using Exchange.Services.Models;
@@ -34,7 +33,7 @@ namespace Exchange.Services
             var list = new List<ICurrencyCoin>();
             list.AddRange(_binanceService.ListPrices());
             list.AddRange(_bittrexService.ListPrices());
-            list.AddRange(_cryptopiaService.ListPrices());
+            list.AddRange(_cryptopiaService.ListPrices().Result);
             return list;
         }
 
@@ -68,7 +67,7 @@ namespace Exchange.Services
             switch (exchange)
             {
                 case "Cryptopia":
-                    ob = _cryptopiaService.GetMarketOrders(string.Format(@"{0}_{1}", symbol, market));
+                    ob = _cryptopiaService.GetMarketOrders(string.Format(@"{0}_{1}", symbol, market)).Result;
                     var i = _cryptopiaService.Get24hrAsync(string.Format(@"{0}_{1}", symbol, market)).Result;
                     ob.Market = new MarketResult { Volume = i.Volume, Last = i.LastPrice };
                     break;

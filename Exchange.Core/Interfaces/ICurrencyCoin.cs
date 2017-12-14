@@ -11,5 +11,7 @@ namespace Exchange.Core.Interfaces
         string TickerSymbol { get; }
         string Market { get; }
         double Price { get; }
+        double Volume {get; set; }
+        double LastPrice { get; set;}
     }
 }

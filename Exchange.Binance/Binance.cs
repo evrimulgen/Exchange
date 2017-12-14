@@ -380,6 +380,9 @@ namespace Exchange.Binance
                 return this.Symbol.Substring(0, this.Symbol.Length - 3);
             }
         }
+
+        public double Volume { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public double LastPrice { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
 
     public class BinanceDepth
@@ -401,10 +404,6 @@ namespace Exchange.Binance
         public double Volume { get; set; }
     }
 
-    public class BinanceMarketRootObject
-    {
-
-    }
     public class BinanceMarketResult
     {
         //GET /api/v1/ticker/24hr

@@ -157,15 +157,6 @@ namespace Exchange.Bittrex
         public string LogoUrl { get; set; }
     }
 
-    public class GetMarketsResult
-    {
-        public bool success { get; set; }
-        public string message { get; set; }
-        public List<MarketResultEntry> result { get; set; }
-    }
-
-    //For Summary API Call
-
     public class GetMarketSummariesResultRootObject
     {
         public bool success { get; set; }
@@ -214,5 +205,7 @@ namespace Exchange.Bittrex
                 return this.Last;
             }
         }
+
+        public double LastPrice { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
 }
