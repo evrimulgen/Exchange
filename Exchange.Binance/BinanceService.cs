@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Exchange.Binance
@@ -14,6 +15,7 @@ namespace Exchange.Binance
         Task<IEnumerable<ICurrencyCoin>> GetAllPricesAsync();
         Task<BinanceMarketResult> Get24hrAsync(string symbol);
         Task<BinanceOrderBook> GetMarketOrdersAsync(string marketName);
+        OrderBook GetOrderBook(string marketName);
     }
 
     public class BinanceService : IBinanceService
@@ -126,6 +128,23 @@ namespace Exchange.Binance
                 throw new NullReferenceException();
             }
             return result;
+        }
+
+        public OrderBook GetOrderBook(string marketName)
+        {
+            var orderBook = new OrderBook();
+            try
+            {
+                var result = GetMarketOrdersAsync(marketName).Result;
+                orderBook.Buy = result.bids.Select(c => new Order { Price = double.Parse(c.ElementAt(0).ToString()), Volume = double.Parse(c.ElementAt(1).ToString()) });
+                orderBook.Sell = result.asks.Select(c => new Order { Price = double.Parse(c.ElementAt(0).ToString()), Volume = double.Parse(c.ElementAt(1).ToString()) });
+            }
+            catch (System.AggregateException e)
+            {
+                
+            }
+            return orderBook;
+
         }
     }
 }

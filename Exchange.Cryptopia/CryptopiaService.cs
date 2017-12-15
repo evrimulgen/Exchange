@@ -1,5 +1,8 @@
-﻿using Exchange.Core.Interfaces;
+﻿using System.Linq;
+using Exchange.Core.Interfaces;
+using Exchange.Core.Models;
 using Exchange.Cryptopia.APIResults;
+using Exchange.Cryptopia.Model;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -12,6 +15,7 @@ namespace Exchange.Cryptopia
         Task<ICurrencyCoin> GetMarketAsync(string symbol);
         Task<IEnumerable<ICurrencyCoin>> GetMarketsAsync();
         Task<IEnumerable<CryptopiaOrderBook>> GetMarketOrderGroupsAsync(string[] marketNames);
+        OrderBook GetOrderBook(string marketName);
     }
     public class CryptopiaService : ICryptopiaService
     {
@@ -164,6 +168,23 @@ namespace Exchange.Cryptopia
             }
 
             return result.Data;
+        }
+
+        public OrderBook GetOrderBook(string marketName)
+        {
+            var orderBook = new OrderBook();
+            try
+            {
+                var result = GetMarketOrdersAsync(marketName).Result;
+                orderBook.Buy = result.Buy.Select(c => new Order { Price = c.Price, Volume = c.Volume });
+                orderBook.Sell = result.Sell.Select(c => new Order { Price = c.Price, Volume = c.Volume });
+            }
+            catch (System.AggregateException e)
+            {
+
+            }
+            return orderBook;
+
         }
     }
 }

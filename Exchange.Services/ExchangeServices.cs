@@ -1,12 +1,13 @@
-using System.Linq;
-using Exchange.Cryptopia;
 using Exchange.Binance;
 using Exchange.Bittrex;
-using System.Collections.Generic;
 using Exchange.Core.Interfaces;
-using System.Threading.Tasks;
+using Exchange.Cryptopia;
+using Exchange.Cryptopia.APIResults;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Exchange.Services
 {
@@ -150,5 +151,6 @@ namespace Exchange.Services
             }
             return result;
         }
-    }
+
+     }
 }

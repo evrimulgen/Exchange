@@ -1,5 +1,8 @@
+using System;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Exchange.Core.Interfaces;
+using Exchange.Cryptopia.APIResults;
 
 namespace Exchange.Cryptopia.Model
 {
@@ -8,9 +11,6 @@ namespace Exchange.Cryptopia.Model
         private Regex _labelRegex = new Regex(@"(?<symbol>.*)\/(?<market>.*)");
         public string Exchange { get { return "Cryptopia"; } }
         public string Logo { get { return "https://www.cryptopia.co.nz/favicon.ico"; } }
-
-        //GET https://www.cryptopia.co.nz/api/GetMarket/DOT_BTC
-        public string URL { get { return "api/GetMarket/{0}"; } }
         public int TradePairId { get; set; }
         public string Label { get; set; }
         public double AskPrice { get; set; }

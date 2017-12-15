@@ -1,4 +1,5 @@
-﻿using Exchange.Bittrex.APIResults;
+﻿using System.Linq;
+using Exchange.Bittrex.APIResults;
 using Exchange.Bittrex.Model;
 using Exchange.Core.Interfaces;
 using Exchange.Core.Models;
@@ -10,10 +11,11 @@ namespace Exchange.Bittrex
 {
     public interface IBittrexService
     {
-        Task<BittrexOrderBook> GetOrderBookAsync(string marketName);
+        Task<GetOrderBookResponse> GetOrderBookAsync(string marketName);
         Task<IEnumerable<ICurrencyCoin>> GetMarketSummariesAsync();
         Task<BittrexCoin> GetMarketSummaryAsync(string symbol);
         Task<IEnumerable<BittrexMarkets>> GetMarketsAsync();
+        OrderBook GetOrderBook(string marketName);
     }
 
     public class BittrexService : IBittrexService
@@ -162,9 +164,9 @@ namespace Exchange.Bittrex
 		///]
         /// </summary>
         /// <returns>Task<OrderBook></returns>
-        public async Task<BittrexOrderBook> GetOrderBookAsync(string marketName)
+        public async Task<GetOrderBookResponse> GetOrderBookAsync(string marketName)
         {
-            var result = await _bittrexClient.GetAsync<BittrexOrderBook>("v1.1/public/getorderbook", "market=" + marketName + "&type=both");
+            var result = await _bittrexClient.GetAsync<GetOrderBookResponse>("v1.1/public/getorderbook", "market=" + marketName + "&type=both");
 
             if (result == null)
             {
@@ -172,6 +174,25 @@ namespace Exchange.Bittrex
             }
 
             return result;
-        }       
+        }
+
+
+
+        public OrderBook GetOrderBook(string marketName)
+        {
+            var orderBook = new OrderBook();
+            try
+            {
+                var result = GetOrderBookAsync(marketName).Result.result;
+                orderBook.Buy = result.buy.Select(c => new Order { Price = c.Rate, Volume = c.Quantity });
+                orderBook.Sell = result.sell.Select(c => new Order { Price = c.Rate, Volume = c.Quantity });
+            }
+            catch (System.AggregateException e)
+            {
+
+            }
+            return orderBook;
+
+        }
     }
 }
