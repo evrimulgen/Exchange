@@ -18,8 +18,6 @@ namespace Exchange.Core.Models
         }
         public IEnumerable<Order> Buy { get; set; }
         public IEnumerable<Order> Sell { get; set; }
-
-        public MarketResult MarketResult { get; set; }
     }
 
     public class ExchangeCoin

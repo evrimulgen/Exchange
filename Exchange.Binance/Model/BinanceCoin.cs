@@ -25,8 +25,11 @@ namespace Exchange.Binance.Model
                 return this.Symbol.Substring(0, this.Symbol.Length - 3);
             }
         }
-        public double Volume { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public double LastPrice { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    }
+        public double Volume { get; set; }
+        public double LastPrice { get; set; }
+        public double AskPrice { get; set; }
+        public double BidPrice { get; set; }
 
+        public string APIFormatted { get { return string.Format("{0}{1}", TickerSymbol.ToUpper(), Market.ToUpper()); } }
+    }
 }

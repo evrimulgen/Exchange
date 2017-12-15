@@ -13,5 +13,8 @@ namespace Exchange.Core.Interfaces
         double Price { get; }
         double Volume {get; set; }
         double LastPrice { get; set;}
+        double AskPrice { get; set; }
+        double BidPrice { get; set; }
+        string APIFormatted { get;  }
     }
 }

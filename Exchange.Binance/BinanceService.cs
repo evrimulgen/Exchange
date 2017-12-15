@@ -16,6 +16,7 @@ namespace Exchange.Binance
         Task<BinanceMarketResult> Get24hrAsync(string symbol);
         Task<BinanceOrderBook> GetMarketOrdersAsync(string marketName);
         OrderBook GetOrderBook(string marketName);
+        double GetMarketVolume(string marketName);
     }
 
     public class BinanceService : IBinanceService
@@ -130,6 +131,11 @@ namespace Exchange.Binance
             return result;
         }
 
+        /// <summary>
+        /// Get the order book for a coin
+        /// </summary>
+        /// <param name="marketName"></param>
+        /// <returns></returns>
         public OrderBook GetOrderBook(string marketName)
         {
             var orderBook = new OrderBook();
@@ -145,6 +151,12 @@ namespace Exchange.Binance
             }
             return orderBook;
 
+        }
+
+        public double GetMarketVolume(string marketName)
+        {
+            var result = Get24hrAsync(marketName).Result;
+            return result.volume;
         }
     }
 }

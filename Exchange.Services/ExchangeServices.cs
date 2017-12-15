@@ -98,15 +98,10 @@ namespace Exchange.Services
             var list = new List<Tuple<ICurrencyCoin, ICurrencyCoin>>();
             foreach (var market in results.Where(c => c.Value.Count() > 0))
             {
-                Console.Write(string.Format("Looking @ {0} with {1} entries\t", market.Key, market.Value.Count()));
-                Stopwatch sw = new Stopwatch();
-                sw.Start();
                 foreach (var ticker in market.Value.Where(c => c.Value.Count() > 1))
                 {
                     list.AddRange(CompareSingleCoinAtMultipleExchanges(ticker.Value));
                 }
-                sw.Stop();
-                Console.WriteLine(string.Format("Finished in {0}ms",sw.ElapsedMilliseconds));
             }
             return list;
         }
@@ -147,10 +142,43 @@ namespace Exchange.Services
             var priceDiff = ((c2.Price - c1.Price) / Math.Abs(c1.Price)) * 100;
             if (priceDiff >= ARB_THRESHOLD)
             {
-                result = Tuple.Create<ICurrencyCoin, ICurrencyCoin>(c1, c2);
+                c1 = GetCoinDetails(c1);
+                c2 = GetCoinDetails(c2);
+                if(c1.Volume > 0 && c2.Volume > 0)  
+                    result = Tuple.Create<ICurrencyCoin, ICurrencyCoin>(c1, c2);
             }
             return result;
         }
 
+        private ICurrencyCoin GetCoinDetails(ICurrencyCoin coin)
+        {
+            switch (coin.Exchange)
+            {
+                case "Binance":
+                    var r1 = _binanceService.Get24hrAsync(coin.APIFormatted).Result;
+                    coin.LastPrice = r1.lastPrice;
+                    coin.AskPrice = r1.askPrice;
+                    coin.BidPrice = r1.bidPrice;
+                    coin.Volume = r1.volume;
+                    break;
+                case "Bittrex":
+                    var r2 = _bittrexService.GetMarketSummaryAsync(coin.APIFormatted).Result;
+                    coin.LastPrice = r2.LastPrice;
+                    coin.AskPrice = r2.AskPrice;
+                    coin.BidPrice = r2.BidPrice;
+                    coin.Volume = r2.Volume;
+                    break;
+                case "Cryptopia":
+                    var r3 = _cryptopiaService.GetMarketAsync(coin.APIFormatted).Result;
+                    coin.LastPrice = r3.LastPrice;
+                    coin.AskPrice = r3.AskPrice;
+                    coin.BidPrice = r3.BidPrice;
+                    coin.Volume = r3.Volume;
+                    break;
+                default:
+                    break;
+            }
+            return coin;
+        }
      }
 }

@@ -16,6 +16,7 @@ namespace Exchange.Bittrex
         Task<BittrexCoin> GetMarketSummaryAsync(string symbol);
         Task<IEnumerable<BittrexMarkets>> GetMarketsAsync();
         OrderBook GetOrderBook(string marketName);
+        double GetMarketVolume(string marketName);
     }
 
     public class BittrexService : IBittrexService
@@ -193,6 +194,12 @@ namespace Exchange.Bittrex
             }
             return orderBook;
 
+        }
+
+        public double GetMarketVolume(string marketName)
+        {
+            var result = GetMarketSummaryAsync(marketName).Result;
+            return result.Volume;
         }
     }
 }

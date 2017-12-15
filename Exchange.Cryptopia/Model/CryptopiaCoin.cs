@@ -11,6 +11,7 @@ namespace Exchange.Cryptopia.Model
         private Regex _labelRegex = new Regex(@"(?<symbol>.*)\/(?<market>.*)");
         public string Exchange { get { return "Cryptopia"; } }
         public string Logo { get { return "https://www.cryptopia.co.nz/favicon.ico"; } }
+        public string APIFormatted { get { return string.Format("{0}_{1}", TickerSymbol.ToUpper(), Market.ToUpper()); } }
         public int TradePairId { get; set; }
         public string Label { get; set; }
         public double AskPrice { get; set; }

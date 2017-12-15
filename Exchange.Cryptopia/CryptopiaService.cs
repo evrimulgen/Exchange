@@ -16,6 +16,8 @@ namespace Exchange.Cryptopia
         Task<IEnumerable<ICurrencyCoin>> GetMarketsAsync();
         Task<IEnumerable<CryptopiaOrderBook>> GetMarketOrderGroupsAsync(string[] marketNames);
         OrderBook GetOrderBook(string marketName);
+        double GetMarketVolume(string marketName);
+
     }
     public class CryptopiaService : ICryptopiaService
     {
@@ -185,6 +187,12 @@ namespace Exchange.Cryptopia
             }
             return orderBook;
 
+        }
+
+        public double GetMarketVolume(string marketName)
+        {
+            var result = GetMarketAsync(marketName).Result;
+            return result.Volume;
         }
     }
 }
