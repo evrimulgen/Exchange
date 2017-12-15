@@ -21,15 +21,47 @@ namespace Exchange.Client
             var serviceProvider = services.BuildServiceProvider();
             var cryptopiaService = serviceProvider.GetRequiredService<ICryptopiaService>();
             var bittrexService = serviceProvider.GetRequiredService<IBittrexService>();
+            var binanaceService = serviceProvider.GetRequiredService<IBinanceService>();
+            var exchangeService = serviceProvider.GetRequiredService<IExchangeServices>();
 
-            var r1 = cryptopiaService.GetMarketOrderGroupsAync(new string[] { "DOT_BTC", "DOT_LTC", "DOT_DOGE" }).Result;
+            Stopwatch sw = new Stopwatch();
 
-            var r2 = bittrexService.GetMarketSummariesAsync().Result;
+            sw.Start();
+            Console.WriteLine("Getting Tickers from all exchanges.....");
+            var r1 = exchangeService.GetAllExchangeTickersAndPrices();
+            Console.WriteLine("Total tickers from all exchanges: {0}ms", r1.Count());
+            Console.WriteLine("Total elapsed time for queries: {0}ms", sw.ElapsedMilliseconds);
+            sw.Stop();
+            sw.Reset();
+            sw.Start();
+            Console.WriteLine("Eliminating all coins that do not have the potential for arbitrage.....");
+            var result = exchangeService.CreateExchangeComparison(r1);
+            sw.Stop();
+            Console.WriteLine("Total elapsed time to eliminate coins: {0}ms", sw.ElapsedMilliseconds);
+            sw.Reset();
+            sw.Start();
+            Console.WriteLine("Strating arbitrage calculations......");
+            var r2 = exchangeService.CalculateArbitrageFromComparison(result);
+            sw.Stop();
+            Console.WriteLine("Total elapsed time to calculate arbitrage on coins: {0}ms", sw.ElapsedMilliseconds);
+            Console.WriteLine("Printing results:");
+            var i = 1;
+            foreach(var item in r2.OrderByDescending(c => (((c.Item2.Price - c.Item1.Price) / Math.Abs(c.Item1.Price)) * 100).ToString("N2")))
+            {
+                Console.WriteLine(string.Format("COMPARE: {0},{1},{2},{3},{4},{5},{6},{7}",
+                    i++,
+                    item.Item1.Exchange, 
+                    item.Item1.TickerSymbol,
+                    item.Item1.Price.ToString("N8"),
+                    item.Item2.Exchange,
+                    item.Item2.TickerSymbol,
+                    item.Item2.Price.ToString("N8"),
+                    (((item.Item2.Price - item.Item1.Price) / Math.Abs(item.Item1.Price)) * 100).ToString("N2")
+                    ));
+            }
 
 
-            Console.WriteLine("Found {0} sybmols @ Cryptopia!", r1.Count());
-            Console.WriteLine("Found {0} sybmols @ Bittrex!", r2.Count());
-            Console.ReadLine();
+            //Console.ReadLine();
         }
 
         public static void ConfigureDependencyInjection(IServiceCollection services)
@@ -39,6 +71,7 @@ namespace Exchange.Client
             services.AddTransient<IBinanceService, BinanceService>();
             services.AddTransient<IBittrexService, BittrexService>();
             services.AddTransient<ICryptopiaService, CryptopiaService>();
+            services.AddTransient<IExchangeServices, ExchangeServices>();
         }
     }
 }

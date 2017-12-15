@@ -68,7 +68,7 @@ namespace Exchange.Services
             {
                 case "Cryptopia":
                     ob = _cryptopiaService.GetMarketOrdersAsync(string.Format(@"{0}_{1}", symbol, market)).Result;
-                    var i = _cryptopiaService.Get24hrAsync(string.Format(@"{0}_{1}", symbol, market)).Result;
+                    var i = _cryptopiaService.GetMarketAsync(string.Format(@"{0}_{1}", symbol, market)).Result;
                     //ob.MarketResult = new MarketResult { Volume = i.Volume, Last = i.LastPrice };
                     break;
                 case "Binance":
