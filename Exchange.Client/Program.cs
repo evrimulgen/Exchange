@@ -4,7 +4,6 @@ using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using Exchange.Cryptopia;
 using Exchange.Binance;
-using static Exchange.Binance.BinanceClient;
 using Exchange.Bittrex;
 using System.Diagnostics;
 using System.Collections.Generic;
@@ -36,7 +35,6 @@ namespace Exchange.Client
         public static void ConfigureDependencyInjection(IServiceCollection services)
         {
             services.AddTransient<IExchangeNormalizerService, ExchangeNormalizerService>();
-            services.AddTransient<IBinanceClient, BinanceClient>();
             services.AddTransient<IApiService, ApiService>();
             services.AddTransient<IBinanceService, BinanceService>();
             services.AddTransient<IBittrexService, BittrexService>();

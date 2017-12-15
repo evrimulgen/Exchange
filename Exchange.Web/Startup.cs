@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using static Exchange.Binance.BinanceClient;
 using Exchange.Cryptopia;
 using Exchange.Bittrex;
 using Exchange.Binance;
@@ -28,7 +27,6 @@ namespace Exchange.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IExchangeNormalizerService, ExchangeNormalizerService>();
-            services.AddTransient<IBinanceClient, BinanceClient>();
             services.AddTransient<IApiService, ApiService>();
             services.AddTransient<IBinanceService, BinanceService>();
             services.AddTransient<IBittrexService, BittrexService>();
