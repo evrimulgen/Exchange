@@ -32,8 +32,8 @@ namespace Exchange.Services
         {
             var list = new List<ICurrencyCoin>();
             list.AddRange(_binanceService.GetAllPricesAsync().Result);
-            list.AddRange(_bittrexService.GetMarketSummaries().Result);
-            list.AddRange(_cryptopiaService.ListPrices().Result.Where(c => !KNOWN_BAD_COINS.Contains(c.TickerSymbol)));
+            list.AddRange(_bittrexService.GetMarketSummariesAsync().Result);
+            list.AddRange(_cryptopiaService.GetMarketsAsync().Result.Where(c => !KNOWN_BAD_COINS.Contains(c.TickerSymbol)));
             return list;
         }
 
@@ -67,7 +67,7 @@ namespace Exchange.Services
             switch (exchange)
             {
                 case "Cryptopia":
-                    ob = _cryptopiaService.GetMarketOrders(string.Format(@"{0}_{1}", symbol, market)).Result;
+                    ob = _cryptopiaService.GetMarketOrdersAsync(string.Format(@"{0}_{1}", symbol, market)).Result;
                     var i = _cryptopiaService.Get24hrAsync(string.Format(@"{0}_{1}", symbol, market)).Result;
                     //ob.MarketResult = new MarketResult { Volume = i.Volume, Last = i.LastPrice };
                     break;

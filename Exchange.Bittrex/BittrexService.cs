@@ -10,10 +10,10 @@ namespace Exchange.Bittrex
 {
     public interface IBittrexService
     {
-        Task<BittrexOrderBook> GetOrderBook(string marketName);
-        Task<IEnumerable<ICurrencyCoin>> GetMarketSummaries();
-        Task<BittrexCoin> GetMarketSummary(string symbol);
-        Task<IEnumerable<BittrexMarkets>> GetMarkets();
+        Task<BittrexOrderBook> GetOrderBookAsync(string marketName);
+        Task<IEnumerable<ICurrencyCoin>> GetMarketSummariesAsync();
+        Task<BittrexCoin> GetMarketSummaryAsync(string symbol);
+        Task<IEnumerable<BittrexMarkets>> GetMarketsAsync();
     }
 
     public class BittrexService : IBittrexService
@@ -37,7 +37,7 @@ namespace Exchange.Bittrex
 		///     "Created" : "2014-02-13T00:00:00"
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<BittrexMarkets>> GetMarkets()
+        public async Task<IEnumerable<BittrexMarkets>> GetMarketsAsync()
         {
             var result = await _bittrexClient.GetAsync<GetMarketsResult>("v1.1/public/getmarkets");
 
@@ -58,7 +58,7 @@ namespace Exchange.Bittrex
 		///     "Last" : 3.35579531
         /// </summary>
         /// <returns>Task<BittrexTicker></returns>
-        public async Task<BittrexTicker> GetTicker(string symbol)
+        public async Task<BittrexTicker> GetTickerAsync(string symbol)
         {
             var result = await _bittrexClient.GetAsync<GetTickerResults>("v1.1/public/getticker", "market=" + symbol);
 
@@ -90,7 +90,7 @@ namespace Exchange.Bittrex
         ///     "DisplayMarketName" : null
         /// </summary>
         /// <returns>Task<IEnumerable<ICurrencyCoin>></returns>
-        public async Task<IEnumerable<ICurrencyCoin>> GetMarketSummaries()
+        public async Task<IEnumerable<ICurrencyCoin>> GetMarketSummariesAsync()
         {
             var result = await _bittrexClient.GetAsync<GetMarketSummariesResult>("v1.1/public/getmarketsummaries");
 
@@ -122,7 +122,7 @@ namespace Exchange.Bittrex
         ///     "DisplayMarketName" : null
         /// </summary>
         /// <returns>Task<BittrexCoin></returns>
-        public async Task<BittrexCoin> GetMarketSummary(string symbol)
+        public async Task<BittrexCoin> GetMarketSummaryAsync(string symbol)
         {
             var result = await _bittrexClient.GetAsync<BittrexCoin>("v1.1/public/getmarketsummary", "market=" + symbol);
 
@@ -162,7 +162,7 @@ namespace Exchange.Bittrex
 		///]
         /// </summary>
         /// <returns>Task<OrderBook></returns>
-        public async Task<BittrexOrderBook> GetOrderBook(string marketName)
+        public async Task<BittrexOrderBook> GetOrderBookAsync(string marketName)
         {
             var result = await _bittrexClient.GetAsync<BittrexOrderBook>("v1.1/public/getorderbook", "market=" + marketName + "&type=both");
 

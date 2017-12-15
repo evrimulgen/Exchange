@@ -22,9 +22,9 @@ namespace Exchange.Client
             var cryptopiaService = serviceProvider.GetRequiredService<ICryptopiaService>();
             var bittrexService = serviceProvider.GetRequiredService<IBittrexService>();
 
-            var r1 = cryptopiaService.GetMarketOrderGroups(new string[] { "DOT_BTC", "DOT_LTC", "DOT_DOGE" }).Result;
+            var r1 = cryptopiaService.GetMarketOrderGroupsAync(new string[] { "DOT_BTC", "DOT_LTC", "DOT_DOGE" }).Result;
 
-            var r2 = bittrexService.GetMarketSummaries().Result;
+            var r2 = bittrexService.GetMarketSummariesAsync().Result;
 
 
             Console.WriteLine("Found {0} sybmols @ Cryptopia!", r1.Count());

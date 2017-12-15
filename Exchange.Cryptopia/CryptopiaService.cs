@@ -9,10 +9,10 @@ namespace Exchange.Cryptopia
 {
     public interface ICryptopiaService
     {
-        Task<CryptopiaOrderBook> GetMarketOrders(string marketName);
+        Task<CryptopiaOrderBook> GetMarketOrdersAsync(string marketName);
         Task<ICurrencyCoin> Get24hrAsync(string symbol);
-        Task<IEnumerable<ICurrencyCoin>> ListPrices();
-        Task<IEnumerable<CryptopiaOrderBook>> GetMarketOrderGroups(string[] marketNames);
+        Task<IEnumerable<ICurrencyCoin>> GetMarketsAsync();
+        Task<IEnumerable<CryptopiaOrderBook>> GetMarketOrderGroupsAsync(string[] marketNames);
     }
     public class CryptopiaService : ICryptopiaService
     {
@@ -34,7 +34,7 @@ namespace Exchange.Cryptopia
             return result.Data;
         }
 
-        public async Task<IEnumerable<ICurrencyCoin>> ListPrices()
+        public async Task<IEnumerable<ICurrencyCoin>> GetMarketsAsync()
         {
             var result = await _cryptopiaClient.GetAsync<GetMarketsResult>("GetMarkets");
 
@@ -46,7 +46,7 @@ namespace Exchange.Cryptopia
             return result.Data;
         }
 
-        public async Task<CryptopiaOrderBook> GetMarketOrders(string marketName)
+        public async Task<CryptopiaOrderBook> GetMarketOrdersAsync(string marketName)
         {
             var result = await _cryptopiaClient.GetAsync<GetMarketOrderResults>(string.Format("GetMarketOrders/{0}", marketName));
 
@@ -58,7 +58,7 @@ namespace Exchange.Cryptopia
             return result.Data;
         }
 
-        public async Task<IEnumerable<CryptopiaOrderBook>> GetMarketOrderGroups(string[] marketNames)
+        public async Task<IEnumerable<CryptopiaOrderBook>> GetMarketOrderGroupsAsync(string[] marketNames)
         {
             var result = await _cryptopiaClient.GetAsync<GetMarketOrderGroupsResults>(string.Format("GetMarketOrderGroups/{0}", string.Join('-', marketNames)));
 

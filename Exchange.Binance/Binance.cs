@@ -13,7 +13,7 @@ namespace Exchange.Binance
     {
         Task<IEnumerable<ICurrencyCoin>> GetAllPricesAsync();
         Task<BinanceMarketResult> Get24hrAsync(string symbol);
-        Task<BinanceOrderBook> GetMarketOrders(string marketName);
+        Task<BinanceOrderBook> GetMarketOrdersAsync(string marketName);
     }
 
     public class BinanceService : IBinanceService
@@ -47,7 +47,7 @@ namespace Exchange.Binance
             return result;
         }
 
-        public async Task<BinanceOrderBook> GetMarketOrders(string marketName)
+        public async Task<BinanceOrderBook> GetMarketOrdersAsync(string marketName)
         {
             var result = await _apiService.GetAsync<BinanceOrderBook>("v1/depth", "symbol=" + marketName);
             if (result == null)
