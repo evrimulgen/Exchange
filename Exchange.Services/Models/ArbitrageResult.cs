@@ -18,7 +18,13 @@ namespace Exchange.Services.Models
         public string Exchange2 { get; set; }
         public double Exchange2Price { get; set; }
         public string Exchange2Logo { get; set; }
-        public double Percentage { get; set; }
+        public double Percentage
+        {
+            get
+            {
+                return ((Exchange2Price - Exchange1Price) / Math.Abs(Exchange1Price)) * 100;
+            }
+        }
 
         public string Exchange1Link
         {

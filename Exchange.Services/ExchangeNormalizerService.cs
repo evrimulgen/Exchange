@@ -123,7 +123,6 @@ namespace Exchange.Services
                     Exchange2 = value2.Exchange,
                     Exchange2Logo = value2.Logo,
                     Exchange2Price = value2.Price,
-                    Percentage = ((1 - (value2.Price / value1.Price)) * 100)
                 };
 
             }
@@ -139,7 +138,6 @@ namespace Exchange.Services
                     Exchange2 = value1.Exchange,
                     Exchange2Logo = value1.Logo,
                     Exchange2Price = value1.Price,
-                    Percentage = ((1 - (value1.Price / value2.Price)) * 100)
                 };
             }
             return result;

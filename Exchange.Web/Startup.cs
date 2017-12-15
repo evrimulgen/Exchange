@@ -27,6 +27,7 @@ namespace Exchange.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IExchangeNormalizerService, ExchangeNormalizerService>();
+            services.AddTransient<IExchangeServices, ExchangeServices>();
             services.AddTransient<IApiService, ApiService>();
             services.AddTransient<IBinanceService, BinanceService>();
             services.AddTransient<IBittrexService, BittrexService>();
